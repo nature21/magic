@@ -339,7 +339,7 @@ def curv2d_alignment(
         object_mask_2=None,
         use_recompute: bool = True
 ) -> Union[tuple[float, float, float, float, np.ndarray, np.ndarray, np.ndarray, np.ndarray],
-           tuple[float, float, float, float, np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray]]:
+tuple[float, float, float, float, np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray]]:
     """
     Aligns two 2D curves by calculating the curvature at specific points on both curves.
 

@@ -103,7 +103,7 @@ def load_igibson_category(
     # Load the custom metadata.
     this_object_data = object_data_custom[
         (object_data_custom['name'] == category) | (
-                    object_data_custom['filename'] == f'objects/{category}/{instance_name}/{instance_name}.urdf')
+                object_data_custom['filename'] == f'objects/{category}/{instance_name}/{instance_name}.urdf')
         ]
     if len(this_object_data) > 0:
         this_object_data = this_object_data.iloc[0]
@@ -146,7 +146,7 @@ def load_igibson_category(
     body = load_obj_from_file(
         scene=scene,
         collision_file=obj_file,
-        visual_file=visual_file, 
+        visual_file=visual_file,
         pose=Pose(pos, xyzw2wxyz(rotation)),
         name=category,
         scale=scale,

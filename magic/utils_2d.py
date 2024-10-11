@@ -1,4 +1,4 @@
-from typing import Union, Iterator
+from typing import Union
 
 import cv2 as cv
 import networkx as nx
@@ -143,7 +143,8 @@ def find_intersections_8_connectivity(
     return common_points, line_pixels
 
 
-def get_coords_before_rotation(rotated_coords: np.ndarray, angle_deg: float, reflection: bool, image_shape: np.ndarray) -> np.ndarray:
+def get_coords_before_rotation(rotated_coords: np.ndarray, angle_deg: float, reflection: bool,
+                               image_shape: np.ndarray) -> np.ndarray:
     # Convert angle to radians
     angle_rad = np.deg2rad(angle_deg)
 

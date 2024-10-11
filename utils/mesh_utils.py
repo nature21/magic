@@ -24,7 +24,7 @@ def get_actor_meshes(actor: sapien.Entity):
         elif isinstance(geom, sapien.PlaneGeometry):
             continue
         elif isinstance(
-            geom, (sapien.ConvexMeshGeometry, sapien.NonconvexMeshGeometry)
+                geom, (sapien.ConvexMeshGeometry, sapien.NonconvexMeshGeometry)
         ):
             vertices = geom.vertices  # [n, 3]
             faces = geom.indices.reshape(-1, 3)  # [m * 3]
@@ -90,7 +90,7 @@ def get_actor_visual_mesh(actor: sapien.ActorBase):
 
 
 def get_articulation_meshes(
-    articulation: sapien.ArticulationBase, exclude_link_names=(), visual=False
+        articulation: sapien.ArticulationBase, exclude_link_names=(), visual=False
 ):
     """Get link meshes in the world frame."""
     meshes = []

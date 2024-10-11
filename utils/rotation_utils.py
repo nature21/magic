@@ -1,41 +1,31 @@
-#! /usr/bin/env python3
-# -*- coding: utf-8 -*-
-# File   : rotation_utils.py
-# Author : Jiayuan Mao
-# Email  : maojiayuan@gmail.com
-# Date   : 02/18/2020
-#
-# This file is part of Project Concepts.
-# Distributed under terms of the MIT license.
-
 from typing import Tuple, List, Union
 
 import numpy as np
 from scipy.spatial.transform import Rotation as R
-
-# from concepts.utils.rotationlib import euler2quat, quat2axisangle
-
-# if TYPE_CHECKING:
-#     from concepts.simulator.pybullet.client import BulletClient
 
 
 # For testing whether a number is close to zero
 _FLOAT_EPS = np.finfo(np.float64).eps
 _EPS4 = _FLOAT_EPS * 4.0
 
+
 def xyzw2wxyz(xyzw: Union[np.ndarray, List]) -> np.ndarray:
     xyzw = np.asarray(xyzw)
     return xyzw[..., [3, 0, 1, 2]]
+
 
 def wxyz2xyzw(wxyz: Union[np.ndarray, List]) -> np.ndarray:
     wxyz = np.asarray(wxyz)
     return wxyz[..., [1, 2, 3, 0]]
 
+
 def rpy2wxyz(rpy: Union[np.ndarray, List]) -> np.ndarray:
     return xyzw2wxyz(R.from_euler('xyz', rpy).as_quat())
 
+
 def rpy2xyzw(rpy: Union[np.ndarray, List]) -> np.ndarray:
     return R.from_euler('xyz', rpy).as_quat()
+
 
 def wxyz2rpy(wxyz: Union[np.ndarray, List]) -> np.ndarray:
     return R.from_quat(wxyz2xyzw(wxyz)).as_euler('xyz')
@@ -93,6 +83,7 @@ def getQuaternionFromMatrix(mat):
         it.iternext()
     return q
 
+
 def euler2quat(euler):
     """ Convert Euler Angles to Quaternions.  See rotation.py for notes """
     euler = np.asarray(euler, dtype=np.float64)
@@ -111,6 +102,7 @@ def euler2quat(euler):
     quat[..., 1] = cj * cs - sj * sc
     return quat
 
+
 def quat2axisangle(quat):
     """ input is wxyz"""
     theta = 0
@@ -124,6 +116,7 @@ def quat2axisangle(quat):
         axis = quat[1:] / sin_theta
 
     return axis, theta
+
 
 def get_quaternion_from_matrix(mat):
     """Convert a rotation matrix to a quaternion.
@@ -416,6 +409,6 @@ def solve_ee_from_tool(target_tool_pos, target_tool_quat, ee_to_tool):
     return frame_inv(target_tool_pos, target_tool_quat, ee_to_tool)
 
 
-def cross(a:np.ndarray,b:np.ndarray)->np.ndarray:
+def cross(a: np.ndarray, b: np.ndarray) -> np.ndarray:
     """This is a walk around of an type annotation bug of numpy when used in pycharm"""
-    return np.cross(a,b)
+    return np.cross(a, b)
