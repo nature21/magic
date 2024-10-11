@@ -1,13 +1,9 @@
-import os
-
 import numpy as np
-import sapien.core as sapien
 from sapien.core import Pose
 
-from manipulation_utils.contact_samplers import load_indirect_push_parameter
 from env.tableScene import TableScene
 from utils.igibson_utils import load_igibson_category
-from utils.rotation_utils import wxyz2xyzw, rpy2wxyz, quat_mul_wxyz
+from utils.rotation_utils import wxyz2xyzw, rpy2wxyz
 from utils.sapien_utils import create_box, create_sphere, load_custom_obj, create_cylinder
 
 

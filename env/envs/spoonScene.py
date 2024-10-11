@@ -1,19 +1,12 @@
-import os
-
 import numpy as np
 from PIL import Image
 from matplotlib import pyplot as plt
 from matplotlib.transforms import Transform
-from mplib import pymp
 from sapien.core import Pose, CameraEntity, Actor
 
-from manipulation_utils.contact_samplers import sample_grasp
-from manipulation_utils.motion import gen_qpos_to_qpos_trajectory, gen_qpos_to_pose_trajectory
-from manipulation_utils.controllers import TrajectoryPositionController
 from env.tableScene import TableScene
 from utils.mesh_utils import get_actor_mesh
-from utils.rotation_utils import quaternion_from_vectors, quat2matrix, rpy2xyzw, quat_mul_wxyz, rpy2wxyz, rotate_vector, \
-    wxyz2xyzw
+from utils.rotation_utils import quaternion_from_vectors, quat2matrix, rpy2xyzw, quat_mul_wxyz, rpy2wxyz, rotate_vector
 from utils.sapien_utils import load_spoon, load_custom_obj, create_sphere, create_box, get_contacts_by_id
 
 
@@ -42,7 +35,7 @@ class SpoonScene(TableScene):
             spoon_id: int,
             fps: float = 240.0,
             add_robot: bool = False,
-            radius = 0.035
+            radius=0.035
     ):
         super().__init__(fps, add_robot)
         if add_robot:
@@ -53,7 +46,8 @@ class SpoonScene(TableScene):
             self.robot.set_qpos(new_qpos)
             self.set_drive_target(new_qpos)
 
-        self.table = create_box(self.scene, Pose([0.57, -0.4, 0.1]), [0.15, 0.1, 0.1], color=np.array([0.8, 0.8, 0.8, 1]), density=1e4, name='table')
+        self.table = create_box(self.scene, Pose([0.57, -0.4, 0.1]), [0.15, 0.1, 0.1],
+                                color=np.array([0.8, 0.8, 0.8, 1]), density=1e4, name='table')
 
         x, y = 0.5, -0.35
         z = 0.2
@@ -87,7 +81,7 @@ class SpoonScene(TableScene):
         self.ball = create_sphere(
             self.scene,
             # Pose(p=[0.5,0,0.045]),
-            Pose(p=[0.5,0,0.035]),
+            Pose(p=[0.5, 0, 0.035]),
             radius=radius,
             color=[1, 0, 0],
             density=1,
@@ -100,7 +94,7 @@ class SpoonScene(TableScene):
 
     def reset_ball(self):
         # we need this function because the ball will have some observable velocity due to noisy simulation
-        self.ball.set_pose(Pose(p=[0.5,0,0.045]))
+        self.ball.set_pose(Pose(p=[0.5, 0, 0.045]))
         self.ball.set_velocity(np.zeros(6))
         self.ball.set_angular_velocity(np.zeros(3))
 
@@ -189,13 +183,13 @@ def get_reference_traj():
     delta_y = 0.01132
     delta_z = 0.02357
     z_offset = 0.008
-    start_spoon_p = np.array([0.51, delta_y-0.1, delta_z+z_offset])
+    start_spoon_p = np.array([0.51, delta_y - 0.1, delta_z + z_offset])
     start_spoon_pose = Pose(start_spoon_p, stage_1_spoon_q)
     demo_scene.spoon.set_pose(start_spoon_pose)
 
     # stage 1
     num_steps_stage_1 = 120
-    intermediate_spoon_p = start_spoon_p+np.array([0, 0.15, 0])
+    intermediate_spoon_p = start_spoon_p + np.array([0, 0.15, 0])
     stage_1_q_array = np.tile(stage_1_spoon_q, (num_steps_stage_1 + 1, 1))
     stage_1_p_array = np.array([
         start_spoon_p + (intermediate_spoon_p - start_spoon_p) * i / num_steps_stage_1
@@ -209,31 +203,29 @@ def get_reference_traj():
         quat_mul_wxyz(rpy2wxyz(omega * i), stage_1_spoon_q) for i in range(num_steps_stage_2 + 1)
     ])
 
-    contact_omega = np.arccos(0.04/0.2) / num_steps_stage_2
+    contact_omega = np.arccos(0.04 / 0.2) / num_steps_stage_2
     contact_point_p_array = np.array([
         [
             0.5,
-            0.05+(0.2-z_offset)*np.sin(contact_omega*i),
-            0.2-(0.2-z_offset)*np.cos(contact_omega*i)
+            0.05 + (0.2 - z_offset) * np.sin(contact_omega * i),
+            0.2 - (0.2 - z_offset) * np.cos(contact_omega * i)
         ]
         for i in range(num_steps_stage_2 + 1)
     ])
 
     stage_2_p_array = np.array([
-        contact_point_p_array[i] + rotate_vector(intermediate_spoon_p-contact_point_p_array[0], rpy2xyzw(omega * i))
+        contact_point_p_array[i] + rotate_vector(intermediate_spoon_p - contact_point_p_array[0], rpy2xyzw(omega * i))
         for i in range(num_steps_stage_2 + 1)
     ])
 
-
     stage_3_num_steps = 240
     stage_3_p_array = np.array([
-        stage_2_p_array[-1] + np.array([0, 0, 0.05]) * i / stage_3_num_steps for i in range(stage_3_num_steps+1)
+        stage_2_p_array[-1] + np.array([0, 0, 0.05]) * i / stage_3_num_steps for i in range(stage_3_num_steps + 1)
     ])
 
-    stage_3_q_array = np.tile(stage_2_q_array[-1], (stage_3_num_steps+1, 1))
+    stage_3_q_array = np.tile(stage_2_q_array[-1], (stage_3_num_steps + 1, 1))
 
     total_p_array = np.concatenate([stage_1_p_array, stage_2_p_array[1:], stage_3_p_array[1:]], axis=0)
     total_q_array = np.concatenate([stage_1_q_array, stage_2_q_array[1:], stage_3_q_array[1:]], axis=0)
 
     return total_p_array, total_q_array
-

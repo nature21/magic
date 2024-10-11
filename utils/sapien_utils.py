@@ -50,7 +50,7 @@ def create_cylinder(
         density=1000,
         mu=0.6,
         e=0.1,
-        name: str='',
+        name: str = '',
         only_visual=False
 ) -> sapien.Actor:
     """Create a cylinder actor in the scene."""
@@ -162,12 +162,14 @@ def get_custom_object_dir() -> str:
 def get_shapenet_mug_dir() -> str:
     return osp.join(osp.dirname(__file__), '../assets/shapenet_mug')
 
+
 def get_spoon_dir() -> str:
     return osp.join(osp.dirname(__file__), '../assets/spoons')
 
 
 def get_custom_metadata() -> pd.DataFrame:
     return pd.read_csv(osp.join(get_custom_object_dir(), 'custom_obj_data.csv'))
+
 
 def get_spoon_metadata() -> dict:
     with open(osp.join(get_spoon_dir(), 'metadata_auto.json'), 'r') as f:
@@ -344,11 +346,10 @@ def load_spoon(
     return body
 
 
-
 def load_mug(
         scene: Scene,
         renderer: SapienRenderer,
-        mug_id: int ,
+        mug_id: int,
         x: float, y: float,
         additional_scale: float = 1.0,
         additional_rotation_xyzw: Optional[np.ndarray] = None,
@@ -358,7 +359,6 @@ def load_mug(
         color: np.ndarray = None,
         is_kinematic: bool = False
 ) -> ActorBase:
-
     pos = np.array([x, y, additional_height])
 
     rotation = additional_rotation_xyzw if additional_rotation_xyzw is not None else np.array([0, 0, 0, 1])
@@ -400,7 +400,8 @@ def load_mug(
     return body
 
 
-def get_contacts_by_id(scene: Scene, object1_id: int, object2_id: Optional[int] = None, distance_threshold: float = 0.002) -> List[Contact]:
+def get_contacts_by_id(scene: Scene, object1_id: int, object2_id: Optional[int] = None,
+                       distance_threshold: float = 0.002) -> List[Contact]:
     """Remember to call scene.step() before calling this function to update the contacts."""
     all_contacts = scene.get_contacts()
     contacts = []
@@ -443,7 +444,8 @@ def get_contacts_by_id(scene: Scene, object1_id: int, object2_id: Optional[int] 
     return contacts
 
 
-def get_contacts_with_articulation(scene: Scene, articulation: sapien.Articulation, distance_threshold: float = 0.002) -> List[Contact]:
+def get_contacts_with_articulation(scene: Scene, articulation: sapien.Articulation,
+                                   distance_threshold: float = 0.002) -> List[Contact]:
     """Remember to call scene.step() before calling this function to update the contacts."""
     all_contacts = scene.get_contacts()
     contacts = []
@@ -474,59 +476,23 @@ def get_contacts_with_articulation(scene: Scene, articulation: sapien.Articulati
     return contacts
 
 
-def get_actor_pcd(actor: ActorBase, num_points: int, to_world_frame: bool = True, return_o3d: bool = False, visual=False) -> Union[np.ndarray, o3d.geometry.PointCloud]:
+def get_actor_pcd(actor: ActorBase, num_points: int, to_world_frame: bool = True, return_o3d: bool = False,
+                  visual=False) -> Union[np.ndarray, o3d.geometry.PointCloud]:
     o3d_pcd = trimesh_to_open3d_mesh(get_actor_mesh(actor, to_world_frame, visual)).sample_points_uniformly(num_points,
-                                                                                                      use_triangle_normal=True)
+                                                                                                            use_triangle_normal=True)
     if return_o3d:
         return o3d_pcd
     else:
         return np.asarray(o3d_pcd.points)
 
 
-def get_articulation_pcd(articulation:ArticulationBase, num_points: int, return_o3d: bool = False, visual=False) -> Union[np.ndarray, o3d.geometry.PointCloud]:
-    o3d_pcd = trimesh_to_open3d_mesh(merge_meshes(get_articulation_meshes(articulation, visual=visual))).sample_points_uniformly(num_points,
-                                                                                                                  use_triangle_normal=True)
+def get_articulation_pcd(articulation: ArticulationBase, num_points: int, return_o3d: bool = False, visual=False) -> \
+Union[np.ndarray, o3d.geometry.PointCloud]:
+    o3d_pcd = trimesh_to_open3d_mesh(
+        merge_meshes(get_articulation_meshes(articulation, visual=visual))).sample_points_uniformly(num_points,
+                                                                                                    use_triangle_normal=True)
     if return_o3d:
         return o3d_pcd
     else:
         return np.asarray(o3d_pcd.points)
 
-
-# class SapienSaver(object):
-#     def __init__(self, scene: Scene):
-#         self.scene = scene
-#
-#     def save(self):
-#         pass
-#
-#     def restore(self):
-#         raise NotImplementedError()
-#
-#     def __enter__(self):
-#         self.save()
-#         return self
-#
-#     def __exit__(self, type, value, traceback):
-#         self.restore()
-#
-#
-# class ActorSaver(SapienSaver):
-#     def __init__(self, scene: Scene, actor_id: int, pose: Pose = None, save: bool = True):
-#         super().__init__(scene)
-#         self.actor_id = actor_id
-#         self.actor_name = self.scene.find_actor_by_id(actor_id).get_name()
-#         self.pose = None
-#
-#         if save:
-#             self.save(pose)
-#
-#     def save(self, pose: Optional[Pose] = None):
-#         if pose is None:
-#             pose = self.scene.find_actor_by_id(self.actor_id).get_pose()
-#         self.pose = pose
-#
-#     def restore(self):
-#         cast(Actor, self.scene.find_actor_by_id(self.actor_id)).set_pose(self.pose)
-#
-#     def __repr__(self):
-#         return '{}({})'.format(self.__class__.__name__, self.actor_name or self.actor_id)

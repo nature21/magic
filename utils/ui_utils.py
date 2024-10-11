@@ -88,6 +88,7 @@ def get_click_coordinates_from_array(image_array: np.ndarray, title='') -> tuple
 
     return app.clicked_coords
 
+
 # Example usage:
 if __name__ == "__main__":
     image_path = "image_scene/hook_with_ball.png"  # Change this to the path of your image.

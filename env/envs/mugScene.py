@@ -1,5 +1,3 @@
-import os
-
 import numpy as np
 import sapien.core as sapien
 from sapien.core import Pose, CameraEntity

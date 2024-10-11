@@ -1,14 +1,16 @@
 import os
+
 import numpy as np
 from PIL import Image
 
 from image_features.get_feature import compute_dino_feature
-try :
+
+try:
     from image_features.get_feature import compute_sd_dino_feature
     from image_features.get_feature import compute_dift_feature
     from image_features.extractor_sd import load_model
     from image_features.extractor_dift import SDFeaturizer
-except :
+except:
     pass
 
 from image_features.match import patch_match, visualize_match
@@ -50,7 +52,7 @@ def match(
         target_imgs = target_imgs + reflected_imgs
 
     original_imgs = [source_img] + target_imgs
-    
+
     if sd_dino and dift:
         raise ValueError('Cannot use both sd_dino and dift at the same time')
 
@@ -156,7 +158,7 @@ def double_match(source_img, target_img, support_center, collide_center, grasp_c
                  patch_size=13,
                  num_rotation=12,
                  use_reflection=False,
-                 rotate_fill_color=(0,0,0),
+                 rotate_fill_color=(0, 0, 0),
                  use_recompute=True
                  ):
     """
@@ -233,11 +235,15 @@ def double_match(source_img, target_img, support_center, collide_center, grasp_c
         )
 
         # rotate the points of the target image to the orignal image
-        center_of_contact_2 = get_coords_before_rotation(center_of_contact_2, best_rotation, reflection, target_img.size)
-        center_of_curvature_2 = get_coords_before_rotation(center_of_curvature_2, best_rotation, reflection, target_img.size)
-        center_of_collide_2 = get_coords_before_rotation(center_of_collide_2, best_rotation, reflection, target_img.size)
+        center_of_contact_2 = get_coords_before_rotation(center_of_contact_2, best_rotation, reflection,
+                                                         target_img.size)
+        center_of_curvature_2 = get_coords_before_rotation(center_of_curvature_2, best_rotation, reflection,
+                                                           target_img.size)
+        center_of_collide_2 = get_coords_before_rotation(center_of_collide_2, best_rotation, reflection,
+                                                         target_img.size)
         if grasp_center is not None:
-            center_of_grasp_2 = get_coords_before_rotation(best_target_grasp_center, best_rotation, reflection, target_img.size)
+            center_of_grasp_2 = get_coords_before_rotation(best_target_grasp_center, best_rotation, reflection,
+                                                           target_img.size)
         else:
             center_of_grasp_2 = None
 

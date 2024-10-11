@@ -1,7 +1,8 @@
 import gc
-try :
+
+try:
     from image_features.extractor_sd import process_features_and_mask
-except : 
+except:
     pass
 
 from typing import List
@@ -246,4 +247,3 @@ def compute_dift_feature(
     downsampled_imgs = [resize(img, output_size, resize=True, to_pil=True, edge=edge_pad) for img in original_imgs]
 
     return result, resized_imgs, downsampled_imgs
-

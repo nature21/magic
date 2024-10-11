@@ -19,21 +19,29 @@ from utils.rotation_utils import quat_mul_wxyz, rpy2wxyz, rotate_vector, wxyz2xy
 from utils.sapien_utils import get_actor_pcd, create_box, get_contacts_by_id
 
 DIRECTION2POSE = {
-    '+y+z': Pose(p=[0.0, 0.75, 0.75], q=quat_mul_wxyz(rpy2wxyz([0, 0, -np.pi / 2]), rpy2wxyz([0, np.arctan2(1, 1), 0]))),
-    '+y-z': Pose(p=[0.0, 0.75, -0.75], q=quat_mul_wxyz(rpy2wxyz([0, 0, -np.pi / 2]), rpy2wxyz([0, np.arctan2(-1, 1), 0]))),
+    '+y+z': Pose(p=[0.0, 0.75, 0.75],
+                 q=quat_mul_wxyz(rpy2wxyz([0, 0, -np.pi / 2]), rpy2wxyz([0, np.arctan2(1, 1), 0]))),
+    '+y-z': Pose(p=[0.0, 0.75, -0.75],
+                 q=quat_mul_wxyz(rpy2wxyz([0, 0, -np.pi / 2]), rpy2wxyz([0, np.arctan2(-1, 1), 0]))),
     '+x+z': Pose(p=[0.75, 0.0, 0.75], q=quat_mul_wxyz(rpy2wxyz([0, np.arctan2(1, -1), 0]), rpy2wxyz([np.pi, 0, 0]))),
     '+x-z': Pose(p=[0.75, 0.0, -0.75], q=quat_mul_wxyz(rpy2wxyz([0, np.arctan2(-1, -1), 0]), rpy2wxyz([np.pi, 0, 0]))),
     '-x+z': Pose(p=[-0.75, 0.0, 0.75], q=rpy2wxyz([0, np.arctan2(1, 1), 0])),
     '-x-z': Pose(p=[-0.75, 0.0, -0.75], q=rpy2wxyz([0, np.arctan2(-1, 1), 0])),
-    '+x+y': Pose(p=[0.75, 0.75, 0.0], q=quat_mul_wxyz(rpy2wxyz([0, 0, -np.pi / 2]), rpy2wxyz([0, 0, np.arctan2(-1, 1)]))),
-    '-x+y': Pose(p=[-0.75, 0.75, 0.0], q=quat_mul_wxyz(rpy2wxyz([0, 0, -np.pi / 2]), rpy2wxyz([0, 0, np.arctan2(1, 1)]))),
-    '-y+z': Pose(p=[0.0, -0.75, 0.75], q=quat_mul_wxyz(rpy2wxyz([0, 0, np.pi / 2]), rpy2wxyz([0, np.arctan2(1, 1), 0]))),
-    '-y-z': Pose(p=[0.0, -0.75, -0.75], q=quat_mul_wxyz(rpy2wxyz([0, 0, np.pi / 2]), rpy2wxyz([0, np.arctan2(-1, 1), 0]))),
-    '+x-y': Pose(p=[0.75, -0.75, 0.0], q=quat_mul_wxyz(rpy2wxyz([0, 0, np.pi / 2]), rpy2wxyz([0, 0, np.arctan2(1, 1)]))),
-    '-x-y': Pose(p=[-0.75, -0.75, 0.0], q=quat_mul_wxyz(rpy2wxyz([0, 0, np.pi / 2]), rpy2wxyz([0, 0, np.arctan2(-1, 1)]))),
-    '+z': Pose(p=[0.0, 0.0 ,0.75*1.414], q=rpy2wxyz([0, np.pi/2, 0])),
-    '+x': Pose(p=[0.75*1.414, 0.0, 0.0], q=rpy2wxyz([0, 0, np.pi])),
-    '+y': Pose(p=[0.0, 0.75*1.414, 0.0], q=rpy2wxyz([0, 0, -np.pi/2]))
+    '+x+y': Pose(p=[0.75, 0.75, 0.0],
+                 q=quat_mul_wxyz(rpy2wxyz([0, 0, -np.pi / 2]), rpy2wxyz([0, 0, np.arctan2(-1, 1)]))),
+    '-x+y': Pose(p=[-0.75, 0.75, 0.0],
+                 q=quat_mul_wxyz(rpy2wxyz([0, 0, -np.pi / 2]), rpy2wxyz([0, 0, np.arctan2(1, 1)]))),
+    '-y+z': Pose(p=[0.0, -0.75, 0.75],
+                 q=quat_mul_wxyz(rpy2wxyz([0, 0, np.pi / 2]), rpy2wxyz([0, np.arctan2(1, 1), 0]))),
+    '-y-z': Pose(p=[0.0, -0.75, -0.75],
+                 q=quat_mul_wxyz(rpy2wxyz([0, 0, np.pi / 2]), rpy2wxyz([0, np.arctan2(-1, 1), 0]))),
+    '+x-y': Pose(p=[0.75, -0.75, 0.0],
+                 q=quat_mul_wxyz(rpy2wxyz([0, 0, np.pi / 2]), rpy2wxyz([0, 0, np.arctan2(1, 1)]))),
+    '-x-y': Pose(p=[-0.75, -0.75, 0.0],
+                 q=quat_mul_wxyz(rpy2wxyz([0, 0, np.pi / 2]), rpy2wxyz([0, 0, np.arctan2(-1, 1)]))),
+    '+z': Pose(p=[0.0, 0.0, 0.75 * 1.414], q=rpy2wxyz([0, np.pi / 2, 0])),
+    '+x': Pose(p=[0.75 * 1.414, 0.0, 0.0], q=rpy2wxyz([0, 0, np.pi])),
+    '+y': Pose(p=[0.0, 0.75 * 1.414, 0.0], q=rpy2wxyz([0, 0, -np.pi / 2]))
 }
 
 
@@ -66,8 +74,9 @@ class TableScene:
         self.viewer = None
 
         material = self.scene.create_physical_material(0.5, 0.5, 0.1)  # Create a physical material
-        self.ground = self.scene.add_ground(altitude=-0.1, render_half_size=[10, 10, 0.1], material=material)  # Add a ground
-        self.plane = create_box(self.scene, Pose([1, 0, -0.05]), [0.8, 1, 0.05], color=[0.9,0.9,0.9,1])
+        self.ground = self.scene.add_ground(altitude=-0.1, render_half_size=[10, 10, 0.1],
+                                            material=material)  # Add a ground
+        self.plane = create_box(self.scene, Pose([1, 0, -0.05]), [0.8, 1, 0.05], color=[0.9, 0.9, 0.9, 1])
 
         self.robot = None
         self.planner: Optional[mplib.Planner] = None
@@ -85,7 +94,8 @@ class TableScene:
             self.robot.set_root_pose(Pose([0, 0, 0], [1, 0, 0, 0]))
 
             # Set initial joint positions
-            init_qpos = [0, 0.19634954084936207, 0.0, -2.617993877991494, 0.0, 2.941592653589793, 0.7853981633974483, 0, 0]
+            init_qpos = [0, 0.19634954084936207, 0.0, -2.617993877991494, 0.0, 2.941592653589793, 0.7853981633974483, 0,
+                         0]
             self.robot.set_qpos(init_qpos)
 
             self.active_joints = self.robot.get_active_joints()
@@ -111,7 +121,8 @@ class TableScene:
         # create a collision object for the floor, with a 10cm offset in the z direction
         floor_fcl_collision_object = fcl.CollisionObject(floor, pymp.Pose())
         # a very small offset of 0.0001 is used to prevent the collision between link0 and the floor
-        floor_fcl_object = fcl.FCLObject('floor', pymp.Pose([0, 0, -0.1001], [1, 0, 0, 0]), [floor_fcl_collision_object], [pymp.Pose()])
+        floor_fcl_object = fcl.FCLObject('floor', pymp.Pose([0, 0, -0.1001], [1, 0, 0, 0]),
+                                         [floor_fcl_collision_object], [pymp.Pose()])
         self.planner = mplib.Planner(
             urdf="assets/panda/panda.urdf",
             srdf="assets/panda/panda.srdf",
@@ -124,9 +135,10 @@ class TableScene:
             objects=[floor_fcl_object]
         )
 
-    def update_env_pcd(self, exclude_ids: list[int] = None, pcd_resolution = 1e-3, verbose=False):
+    def update_env_pcd(self, exclude_ids: list[int] = None, pcd_resolution=1e-3, verbose=False):
         """Update the point cloud of the environment for planner collision avoidance"""
-        all_actor_ids = [actor.get_id() for actor in self.scene.get_all_actors() if len(actor.get_collision_shapes()) > 0]
+        all_actor_ids = [actor.get_id() for actor in self.scene.get_all_actors() if
+                         len(actor.get_collision_shapes()) > 0]
         all_links = self.scene.get_all_articulations()
         for articulation in all_links:
             all_actor_ids += [link.get_id() for link in articulation.get_links()]
@@ -166,19 +178,20 @@ class TableScene:
             o3d.visualization.draw_geometries([o3d_pcd])
 
         self.planner.update_point_cloud(pcd, resolution=pcd_resolution)
-        return pcd # return the point cloud for debugging
+        return pcd  # return the point cloud for debugging
 
     def grasp_center_ik(self, grasp_center: np.ndarray, ee_quat_wxyz: np.ndarray,
                         start_qpos: np.ndarray, mask: list = None,
                         threshold: float = 1e-3, exclude_ids: Optional[List[int]] = None,
                         verbose: bool = False
-    ) -> tuple[Union[np.ndarray, None], np.ndarray]:
+                        ) -> tuple[Union[np.ndarray, None], np.ndarray]:
         if self.robot is None:
             raise ValueError("No robot in the scene")
         pos_delta = np.array([0, 0, 0.1])
         ee_quat_xyzw = wxyz2xyzw(ee_quat_wxyz)
         hand_pos = grasp_center - rotate_vector(pos_delta, ee_quat_xyzw)
-        return self.ee_ik(Pose(p=hand_pos, q=ee_quat_wxyz), start_qpos, mask, threshold, exclude_ids, verbose=verbose), hand_pos
+        return self.ee_ik(Pose(p=hand_pos, q=ee_quat_wxyz), start_qpos, mask, threshold, exclude_ids,
+                          verbose=verbose), hand_pos
 
     def ee_ik(
             self,
@@ -189,7 +202,7 @@ class TableScene:
             exclude_ids: Optional[List[int]] = None,
             return_closest: bool = False,
             verbose: bool = False,
-            pcd_resolution = 1e-3
+            pcd_resolution=1e-3
     ) -> Union[np.ndarray, None]:
         if self.robot is None:
             raise ValueError("No robot in the scene")
@@ -240,7 +253,8 @@ class TableScene:
         else:
             return None
 
-    def follow_path(self, result, check_collision=False, collision_obj_1=None, collision_obj_2=None, threshold=1e-3, camera=None, camera_interval=4):
+    def follow_path(self, result, check_collision=False, collision_obj_1=None, collision_obj_2=None, threshold=1e-3,
+                    camera=None, camera_interval=4):
         n_step = result['position'].shape[0]
         collision = False
         images = []
@@ -301,7 +315,6 @@ class TableScene:
             return images
         else:
             return None
-
 
     def close_gripper(self, gripper_target=0.01, camera=None, camera_interval=4):
         images = []
