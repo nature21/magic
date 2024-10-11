@@ -197,7 +197,7 @@ class SDFeaturizer:
         gc.collect()
         onestep_pipe = onestep_pipe.to("cuda")
         onestep_pipe.enable_attention_slicing()
-        onestep_pipe.enable_xformers_memory_efficient_attention()
+        # onestep_pipe.enable_xformers_memory_efficient_attention()
         null_prompt_embeds = onestep_pipe._encode_prompt(
             prompt=null_prompt,
             device='cuda',

@@ -5,7 +5,6 @@ sapien==2.2.2
 mani_skill2==0.5.3
 mplib==0.2.0a0
 
-diffusers==0.28.0
 faiss_cpu==1.8.0
 imageio==2.34.0
 loguru==0.7.2
@@ -24,5 +23,6 @@ timm==0.6.11
 tqdm==4.66.2
 trimesh==4.2.0
 shapely==2.0.3
+diffusers==0.15.0
 jupyter
 accelerate
