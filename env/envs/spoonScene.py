@@ -45,7 +45,6 @@ class SpoonScene(TableScene):
             radius = 0.035
     ):
         super().__init__(fps, add_robot)
-
         if add_robot:
             current_qpos = self.robot.get_qpos()
             current_ee_pose = self.end_effector.get_pose()
@@ -54,28 +53,11 @@ class SpoonScene(TableScene):
             self.robot.set_qpos(new_qpos)
             self.set_drive_target(new_qpos)
 
-
-        table_physical_material = self.scene.create_physical_material(0.1, 0.1, 0.1)
-        # self.table, _ = load_custom_obj(
-        #     self.scene,
-        #     self.renderer,
-        #     'table',
-        #     0.5,
-        #     -0.5,
-        #     additional_scale=np.array([0.3, 0.2, 0.2]),
-        #     additional_height=0,
-        #     density=1e4,
-        #     color=np.array([0.8, 0.8, 0.8, 1]),
-        #     physical_material=table_physical_material
-        # )
-        # self.table.set_pose(Pose([0.57, -0.4, 0]))
-
         self.table = create_box(self.scene, Pose([0.57, -0.4, 0.1]), [0.15, 0.1, 0.1], color=np.array([0.8, 0.8, 0.8, 1]), density=1e4, name='table')
 
         x, y = 0.5, -0.35
         z = 0.2
         additional_scale = 2.5
-        # spoon_physical_material = self.scene.create_physical_material(0.1, 0.1, 0.1)
         spoon_physical_material = self.scene.create_physical_material(0.5, 0.5, 0.1)
         self.spoon: Actor = load_spoon(
             self.scene,
@@ -126,10 +108,6 @@ class SpoonScene(TableScene):
         self.scene.unpack(self.init_state)
 
     def is_success(self) -> bool:
-        # print(self.ball.get_pose().p[2])
-        # print(len(get_contacts_by_id(self.scene, self.spoon.get_id(), self.ball.get_id())))
-        # print(np.linalg.norm(self.ball.get_velocity()))
-        # print(np.linalg.norm(self.spoon.get_velocity()))
         if (self.ball.get_pose().p[2] > 0.2 and
                 len(get_contacts_by_id(self.scene, self.spoon.get_id(), self.ball.get_id())) > 0 and
                 np.linalg.norm(self.ball.get_velocity()) < 0.1 and

@@ -1,5 +1,9 @@
 import gc
-from image_features.extractor_sd import process_features_and_mask
+try :
+    from image_features.extractor_sd import process_features_and_mask
+except : 
+    pass
+
 from typing import List
 
 import torch

@@ -66,14 +66,14 @@ pip install -e .
 cd ../../..
 ```
 
-Finally, install the other dependencies.
+Finally, install the other dependencies. 
 
 ```bash
 pip install -r requirements.txt
 ```
 
 ## Assets
-Download the meshes and urdf files from this [link](), and extract it as the `./assets` folder. The assets folder should look like this:
+Download the meshes and urdf files from this [link](https://drive.google.com/file/d/1d2Xd5Jtr8LFy-yXqjzEMV_IMTNtyjb2T/view?usp=sharing), and extract it as the `./assets` folder. The assets folder should look like this:
 ```
 assets
 ├── custom_objects
@@ -84,7 +84,7 @@ assets
 ```
 
 # 🛠️ Usage 
-To reproduce our simulation results with one click, run the following commands. You can see the rendered videos of the trajectory in `./videos`, the visualization of global contact points found by DINOv2 and the local alignment established by curvature `./results`.
+To reproduce our simulation results with one click, run the following commands. You can see the rendered videos of the trajectory in `./videos`, the visualization of global contact points found by DINOv2 and the local alignment established by curvature `./results`. Before running the experiments, make sure that `Vulkan` is configured correctly following the instructions [here](https://maniskill.readthedocs.io/en/latest/user_guide/getting_started/installation.html#vulkan), otherwise `Segmentation Fault` might be raised. 
 
 ```bash
 # scooping
