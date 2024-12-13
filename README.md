@@ -66,7 +66,7 @@ pip install -e .
 cd ../../..
 ```
 
-If it raises error ``The detected CUDA version (xx.x) mismatches the version that was used to compile PyTorch (xx.x). Please make sure to use the same CUDA versions.`` while building `detectron2`, please install the corresponding CUDA toolkit with ``sudo apt-get -y install cuda-toolkit-xx-x``, and then add ``export PATH=/usr/local/cuda-12.1/bin/:$PATH`` to ``~/.bashrc``.
+If it raises error ``The detected CUDA version (xx.x) mismatches the version that was used to compile PyTorch (xx.x). Please make sure to use the same CUDA versions.`` while building `detectron2`, please install the corresponding CUDA toolkit with ``sudo apt-get -y install cuda-toolkit-xx-x``, and then add ``export PATH=/usr/local/cuda-xx.x/bin/:$PATH`` to ``~/.bashrc``.
 
 Finally, install the other dependencies. 
 
