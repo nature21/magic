@@ -15,10 +15,10 @@ This repo is the official code release for MAGIC:
             One-Shot Manipulation Strategy Learning by Making Contact Analogies
         </a><br/>
     </strong>
-    Yuyao Liu*<sup>1</sup>, Jiayuan Mao*<sup>2</sup>, Joshua Tenenbaum<sup>2</sup>, Tomás Lozano-Pérez<sup>2</sup>, Leslie Pack Kaelbling<sup>2</sup><br>
-    <sup>1</sup><em>Tsinghua Universtiy, IIIS&nbsp;&nbsp;</em>
-    <sup>2</sup><em>Massachusetts Institute of Technology</em><br>
-    *Equal contribution
+    Yuyao Liu*<sup>12</sup>, Jiayuan Mao*<sup>1</sup>, Joshua Tenenbaum<sup>1</sup>, Tomás Lozano-Pérez<sup>1</sup>, Leslie Pack Kaelbling<sup>1</sup><br>
+    <sup>1</sup><em>Massachusetts Institute of Technology&nbsp;&nbsp;</em>
+    <sup>2</sup><em>Tsinghua University</em><br>
+    *Equal contribution. Work done while Yuyao Liu was a visiting student at MIT.
     </p>
 </td></tr></table>&nbsp;</p>
 
